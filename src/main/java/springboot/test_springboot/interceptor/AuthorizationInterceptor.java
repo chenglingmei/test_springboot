@@ -32,7 +32,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 				write.write(resp);
 				write.flush();
 				write.close();
-				log.info("您没有登录请先登录............");
+				log.info("您没有登录请先登录.............");
 				return false;
 			}
 			
