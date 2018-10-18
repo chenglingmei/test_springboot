@@ -52,9 +52,10 @@ public class UserController {
 		return testService.select();
 
 	}
-
+	
+    //注册用户
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
-	public ResultCode addUser(@RequestBody User u) {
+	public ResultCode addUser(@RequestBody User u,HttpServletRequest request) {
 
 		// if(u.getName()==null||"".equals(u.getName())) {}
 
@@ -67,8 +68,11 @@ public class UserController {
 		if (!b) {
 			return ResultCode.errorCode("手机号格式不正确");
 		}
-		
-        return userService.add(u);
+		 
+         ResultCode resultCode=userService.add(u);
+         User user=(User)resultCode.getData();
+         request.getSession().setAttribute("user", user);
+         return resultCode;
 
 	}
 
@@ -135,8 +139,12 @@ public class UserController {
 	@RequestMapping("login")
 	public ResultCode login(@RequestBody User u,HttpServletRequest request) {
 		ResultCode resultCode=userService.login(u);
+		if(resultCode.getStatus()!=200) {
+			return resultCode;
+		}
 		User user=(User)resultCode.getData();
 		request.getSession().setAttribute("user", user);
+		//因为对应的password不能返回给前端，所以重新建立了一个对象来接收从数据库中查询出来的用户信息
 		UserVo userVo=new UserVo();
 		userVo.setOrgCode(user.getOrgCode());
 		userVo.setAge(user.getAge());

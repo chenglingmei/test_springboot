@@ -46,7 +46,16 @@ public class User implements Serializable{
 	private String orgName = "";
 	private int type; // 0普通员工 1管理员 2创始人
 	private String remark = "";
+	private int role;
 	
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
+
 	public String getPassword2() {
 		return password2;
 	}

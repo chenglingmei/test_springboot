@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         String md5password=Md5Util.EncoderByMd5(p1);
         user.setPassword(md5password);
 		userRepository.save(user);
-		return ResultCode.succese();
+		return ResultCode.succese(u);
 	}
 	
 	@Override
@@ -53,6 +53,8 @@ public class UserServiceImpl implements UserService {
 		if (u.getId() > 0) {
 			User user = userRepository.getOne(u.getId());
 			user.setName(u.getName());
+			user.setOrgCode(u.getOrgCode());
+			user.setOrgId(u.getOrgId());
 			user = userRepository.save(user);
 			return user;
 		}
@@ -98,8 +100,13 @@ public class UserServiceImpl implements UserService {
 		}
 		String md5Str=Md5Util.EncoderByMd5(u.getPassword());
 		if(user.getMobile().equals(u.getMobile())&&user.getPassword().equals(md5Str)){
+			//用户登录后判断是否加入公司
+			if(org.apache.commons.lang3.StringUtils.isEmpty(user.getOrgCode())) {
+				return ResultCode.errorCode("还未注册或加入公司，请先去注册或加入");
+			}
 			
-			return ResultCode.succese(user);
+				return ResultCode.succese(user);
+			
 		}
 		else {
 			return ResultCode.errorCode("没有此用户，或用户名密码错误");

@@ -1,11 +1,13 @@
 package springboot.test_springboot.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-@Entity
+@Entity(name="organization")
 public class Organization {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -16,9 +18,17 @@ public class Organization {
 	private String code;
 	private String email;
 	private String userName;
-	private String createDate;
+	private Date createDate;
+	@Column(name="user_id")
+	private int userId;
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 	public int getId() {
-		return id;
+		return id;                                          
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -53,10 +63,10 @@ public class Organization {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getCreateDate() {
+	public Date getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(String createDate) {
+	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 	
